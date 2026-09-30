@@ -1,0 +1,20 @@
+{
+  "name": "topsms-mcp",
+  "version": "1.1.0",
+  "description": "MCP server for TopSMS, a Czech SMS gateway: send and schedule SMS, bulk SMS, OTP verification codes, delivery status and credit from Claude, ChatGPT, Cursor and other AI assistants.",
+  "type": "module",
+  "bin": { "topsms-mcp": "index.js" },
+  "main": "index.js",
+  "files": ["index.js", "README.md", "LICENSE"],
+  "engines": { "node": ">=18" },
+  "keywords": ["mcp", "model-context-protocol", "sms", "sms-gateway", "topsms", "czech", "slovakia", "claude", "ai-agent"],
+  "homepage": "https://www.topsms.cz/api-integrace/mcp",
+  "repository": { "type": "git", "url": "https://github.com/topsms-ghb/topsms-mcp" },
+  "author": "TopSMS <info@topsms.cz>",
+  "license": "MIT",
+  "mcpName": "io.github.topsms-ghb/topsms-mcp",
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.12.0",
+    "zod": "^3.23.8"
+  }
+}
