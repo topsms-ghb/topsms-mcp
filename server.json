@@ -1,0 +1,38 @@
+{
+  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
+  "name": "io.github.topsms-ghb/topsms-mcp",
+  "title": "TopSMS",
+  "description": "Czech SMS gateway: send and schedule SMS, OTP verification codes, delivery status and credit.",
+  "websiteUrl": "https://www.topsms.cz/api-integrace/mcp",
+  "repository": {
+    "url": "https://github.com/topsms-ghb/topsms-mcp",
+    "source": "github"
+  },
+  "version": "1.1.0",
+  "packages": [
+    {
+      "registryType": "npm",
+      "identifier": "topsms-mcp",
+      "version": "1.1.0",
+      "transport": {
+        "type": "stdio"
+      },
+      "environmentVariables": [
+        {
+          "name": "TOPSMS_CLIENT_ID",
+          "description": "API key Client ID from the TopSMS dashboard (API klíče)",
+          "isRequired": true,
+          "format": "string",
+          "isSecret": false
+        },
+        {
+          "name": "TOPSMS_SECRET",
+          "description": "API key secret from the TopSMS dashboard",
+          "isRequired": true,
+          "format": "string",
+          "isSecret": true
+        }
+      ]
+    }
+  ]
+}
