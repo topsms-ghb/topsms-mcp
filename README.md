@@ -1,6 +1,6 @@
 # TopSMS MCP server
 
-Send SMS from Claude, ChatGPT, Cursor and other AI assistants through [TopSMS](https://www.topsms.cz), a Czech SMS gateway for businesses (Czech Republic, Slovakia and 200+ countries).
+Send SMS from Claude, ChatGPT, Cursor and other AI assistants through [TopSMS](https://topsms.eu), an EU SMS gateway for businesses (Germany, Austria, Czech Republic, Slovakia and 200+ countries). Prepaid, no monthly fee, 10 free SMS on registration.
 
 ## Tools
 
@@ -18,7 +18,7 @@ Send SMS from Claude, ChatGPT, Cursor and other AI assistants through [TopSMS](h
 
 ## Setup
 
-1. Create a free account at [topsms.cz](https://www.topsms.cz/?registrace) (10 free SMS).
+1. Create a free account at [topsms.eu](https://topsms.eu/#register) (English/German, billed in EUR) or [topsms.cz](https://www.topsms.cz/?registrace) (Czech, billed in CZK). 10 free SMS either way.
 2. In the dashboard open **API klíče** (API keys), create a key with scopes `send` and `read`, copy the Client ID and Secret.
 3. Add the server to your MCP client.
 
@@ -47,13 +47,13 @@ Use the same `command`, `args` and `env` in the client's MCP configuration.
 
 ## Pricing
 
-0.88–0.98 CZK (≈ €0.036–0.040) per SMS to Czech and Slovak numbers, no monthly fees, credit never expires. EU 2 CZK, rest of world 3 CZK per segment. Full list: https://www.topsms.cz/pricing.json
+€0.084 per SMS to Germany, Austria and other EU countries, €0.036–0.040 to Czech and Slovak numbers, no monthly fees, credit never expires. Full price list: https://topsms.eu/#pricing (EUR) · https://www.topsms.cz/pricing.json (CZK).
 
 ## Notes
 
 - Every `send_*` call spends real credit. AI clients usually ask for confirmation before calling tools; keep that enabled.
 - 160 characters without diacritics = 1 SMS, 70 with diacritics or emoji.
-- API docs: https://www.topsms.cz/api-integrace/rest-api · Support: info@topsms.cz
+- API docs: https://topsms.eu/docs (English) · https://topsms.eu/de/docs (Deutsch) · https://www.topsms.cz/api-integrace/rest-api (česky) · OpenAPI: https://topsms.eu/openapi.yaml · Support: info@topsms.cz
 
 ## License
 
