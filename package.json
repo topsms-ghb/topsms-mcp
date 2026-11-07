@@ -24,7 +24,12 @@
     "czech",
     "slovakia",
     "claude",
-    "ai-agent"
+    "ai-agent",
+    "germany",
+    "austria",
+    "eu",
+    "otp",
+    "bulk-sms"
   ],
   "homepage": "https://topsms.eu/mcp",
   "repository": {

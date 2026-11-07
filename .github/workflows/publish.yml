@@ -1,0 +1,22 @@
+# Publikace na npm pres Trusted Publishing (OIDC), bez tokenu v repozitari.
+# Jednorazove nastaveni na npmjs.com: balicek topsms-mcp -> Settings -> Trusted publisher -> GitHub Actions,
+# repository topsms-ghb/topsms-mcp, workflow publish.yml. Pak kazdy tag v* (nebo rucni spusteni) publikuje verzi z package.json.
+name: Publish to npm
+on:
+  push:
+    tags: ['v*']
+  workflow_dispatch:
+permissions:
+  id-token: write
+  contents: read
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          registry-url: https://registry.npmjs.org
+      - run: npm install -g npm@latest
+      - run: npm publish --provenance --access public
