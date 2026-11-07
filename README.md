@@ -1,6 +1,6 @@
 # TopSMS MCP server
 
-Send SMS from Claude, ChatGPT, Cursor and other AI assistants through [TopSMS](https://topsms.eu), an EU SMS gateway for businesses (Germany, Austria, Czech Republic, Slovakia and 200+ countries). Prepaid, no monthly fee, 10 free SMS on registration.
+Send SMS from Claude, ChatGPT, Cursor and other AI assistants through TopSMS, an SMS gateway for businesses with two front doors: [TopSMS.cz](https://www.topsms.cz) for the Czech Republic and Slovakia (billed in CZK) and [TopSMS.eu](https://topsms.eu) for Germany, Austria and the rest of the EU (billed in EUR). One API, 200+ countries, prepaid, no monthly fee, 10 free SMS on registration.
 
 ## Tools
 
