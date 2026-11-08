@@ -48,7 +48,7 @@ const idemHeader = (k) => (k ? { 'Idempotency-Key': k } : {})
 
 server.tool(
   'send_sms',
-  'Send one SMS message via TopSMS (Czech SMS gateway). Costs credit: 160 chars without diacritics = 1 SMS, 70 with diacritics/emoji. Returns message id, number of segments and price in CZK.',
+  'Send one SMS message via TopSMS (Czech SMS gateway). Costs credit: 160 chars without diacritics = 1 SMS, 70 with diacritics/emoji. Returns message id, number of segments and price in your account currency (field currency: EUR for topsms.eu accounts, CZK for topsms.cz).',
   { to: phone, text: z.string().min(1).max(1600).describe('Message text.'), from: sender, send_at: sendAt, idempotencyKey: idem },
   wrap(({ to, text, from, send_at, idempotencyKey }) => api('POST', '/api/sms/send', { to, text, ...(from ? { from } : {}), ...(send_at ? { send_at } : {}) }, idemHeader(idempotencyKey))),
 )
@@ -117,7 +117,7 @@ server.tool(
 
 server.tool(
   'get_credit',
-  'Get the current TopSMS credit balance (CZK) and the price per SMS for this account.',
+  'Get the current TopSMS credit balance and base price per SMS in your account currency (field currency: EUR or CZK).',
   {},
   wrap(() => api('GET', '/api/credit')),
 )
