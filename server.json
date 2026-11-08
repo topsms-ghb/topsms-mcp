@@ -2,8 +2,8 @@
   "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
   "name": "io.github.topsms-ghb/topsms-mcp",
   "title": "TopSMS",
-  "description": "TopSMS SMS gateway (topsms.cz / topsms.eu): send and schedule SMS, OTP verification codes, delivery status and credit.",
-  "websiteUrl": "https://www.topsms.cz/api-integrace/mcp",
+  "description": "EU SMS gateway (topsms.eu, topsms.cz): send SMS, OTP codes, delivery status and credit.",
+  "websiteUrl": "https://topsms.eu/mcp",
   "repository": {
     "url": "https://github.com/topsms-ghb/topsms-mcp",
     "source": "github"
@@ -33,6 +33,12 @@
           "isSecret": true
         }
       ]
+    }
+  ],
+  "remotes": [
+    {
+      "type": "streamable-http",
+      "url": "https://topsms.eu/api/mcp"
     }
   ]
 }
