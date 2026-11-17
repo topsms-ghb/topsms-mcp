@@ -1,6 +1,9 @@
-# Publikace na npm pres Trusted Publishing (OIDC), bez tokenu v repozitari.
+# Publikace na npm pres Trusted Publishing (OIDC), bez tokenu v repozitari,
+# a pak do oficialniho MCP Registry (registry.modelcontextprotocol.io) take pres OIDC.
 # Jednorazove nastaveni na npmjs.com: balicek topsms-mcp -> Settings -> Trusted publisher -> GitHub Actions,
 # repository topsms-ghb/topsms-mcp, workflow publish.yml. Pak kazdy tag v* (nebo rucni spusteni) publikuje verzi z package.json.
+# MCP Registry nepotrebuje zadne nastaveni: jmeno io.github.topsms-ghb/* overi z OIDC tokenu tohoto repozitare.
+# Verze v server.json musi odpovidat verzi v package.json.
 name: Publish to npm
 on:
   push:
@@ -19,4 +22,22 @@ jobs:
           node-version: 22
           registry-url: https://registry.npmjs.org
       - run: npm install -g npm@latest
-      - run: npm publish --provenance --access public
+      - name: Publish to npm (preskoci, pokud verze uz existuje)
+        run: |
+          VERSION=$(node -p "require('./package.json').version")
+          if npm view "topsms-mcp@$VERSION" version >/dev/null 2>&1; then
+            echo "topsms-mcp@$VERSION uz na npm je, preskakuji npm publish."
+          else
+            npm publish --provenance --access public
+          fi
+      - name: Publish to MCP Registry
+        run: |
+          curl -sSL "https://github.com/modelcontextprotocol/registry/releases/latest/download/mcp-publisher_linux_amd64.tar.gz" | tar xz mcp-publisher
+          ./mcp-publisher login github-oidc
+          # npm muze par sekund indexovat novou verzi, proto az 5 pokusu
+          for i in 1 2 3 4 5; do
+            ./mcp-publisher publish && exit 0
+            echo "Pokus $i selhal, zkusim znovu za 20 s..."
+            sleep 20
+          done
+          exit 1
