@@ -8,11 +8,11 @@ import { z } from 'zod'
 const BASE = (process.env.TOPSMS_BASE_URL || 'https://www.topsms.cz').replace(/\/$/, '')
 const CLIENT_ID = process.env.TOPSMS_CLIENT_ID || ''
 const SECRET = process.env.TOPSMS_SECRET || ''
-const VERSION = '1.1.0'
+const VERSION = '1.1.2'
 
 async function api(method, path, body, extraHeaders = {}) {
   if (!CLIENT_ID || !SECRET) {
-    throw new Error('Missing TOPSMS_CLIENT_ID or TOPSMS_SECRET. Create an API key in the TopSMS dashboard (API klíče) and set both environment variables.')
+    throw new Error('Missing TOPSMS_CLIENT_ID or TOPSMS_SECRET. Create an API key in the TopSMS dashboard (API keys) and set both environment variables.')
   }
   const res = await fetch(BASE + path, {
     method,
@@ -48,7 +48,7 @@ const idemHeader = (k) => (k ? { 'Idempotency-Key': k } : {})
 
 server.tool(
   'send_sms',
-  'Send one SMS message via TopSMS (Czech SMS gateway). Costs credit: 160 chars without diacritics = 1 SMS, 70 with diacritics/emoji. Returns message id, number of segments and price in your account currency (field currency: EUR for topsms.eu accounts, CZK for topsms.cz).',
+  'Send one SMS message via the TopSMS SMS gateway (topsms.eu / topsms.cz). Costs credit: 160 GSM-7 chars = 1 SMS, 70 with other diacritics/emoji. Returns message id, number of segments and price in your account currency (field currency: EUR for topsms.eu accounts, CZK for topsms.cz).',
   { to: phone, text: z.string().min(1).max(1600).describe('Message text.'), from: sender, send_at: sendAt, idempotencyKey: idem },
   wrap(({ to, text, from, send_at, idempotencyKey }) => api('POST', '/api/sms/send', { to, text, ...(from ? { from } : {}), ...(send_at ? { send_at } : {}) }, idemHeader(idempotencyKey))),
 )
@@ -117,14 +117,14 @@ server.tool(
 
 server.tool(
   'get_credit',
-  'Get the current TopSMS credit balance and base price per SMS in your account currency (field currency: EUR or CZK).',
+  'Get the current TopSMS credit balance and the price per SMS, both in your account currency (field currency: EUR for topsms.eu accounts, CZK for topsms.cz accounts).',
   {},
   wrap(() => api('GET', '/api/credit')),
 )
 
 server.tool(
   'get_pricing',
-  'Get the public TopSMS price list (tiers, prices per destination zone in CZK and EUR, Sender ID fee, billing rules). Does not require credentials.',
+  'Get the current public TopSMS price list (prices per destination zone, volume tiers, sender name fee, billing rules). Does not require credentials. Use it instead of quoting prices from memory.',
   {},
   async () => {
     try {

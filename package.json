@@ -1,7 +1,7 @@
 {
   "name": "topsms-mcp",
-  "version": "1.1.1",
-  "description": "MCP server for the TopSMS SMS gateways (topsms.cz for Czechia and Slovakia, topsms.eu for Germany, Austria and the EU): send and schedule SMS, bulk SMS, OTP verification codes, delivery status and credit from Claude, ChatGPT, Cursor and other AI assistants.",
+  "version": "1.1.2",
+  "description": "MCP server for the TopSMS SMS gateway (topsms.eu / topsms.cz): send and schedule SMS, bulk SMS, OTP verification codes, delivery status and credit from Claude, ChatGPT, Cursor and other AI assistants.",
   "type": "module",
   "bin": {
     "topsms-mcp": "index.js"
@@ -21,14 +21,18 @@
     "sms",
     "sms-gateway",
     "topsms",
+    "sms-api",
+    "claude",
+    "chatgpt",
+    "cursor",
+    "ai-agent",
     "czech",
     "slovakia",
-    "claude",
-    "ai-agent",
     "germany",
     "austria",
     "eu",
     "otp",
+    "verification",
     "bulk-sms"
   ],
   "homepage": "https://topsms.eu/mcp",
