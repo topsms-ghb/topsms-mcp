@@ -20,7 +20,9 @@ There are two ways to connect:
 2. Connect your AI client:
    - **Hosted connector (OAuth, no install):** in Claude go to Settings → Connectors → Add custom connector and enter `https://topsms.eu/api/mcp`; in ChatGPT create a connector in Developer mode with the same URL. Sign in to TopSMS and click Allow.
    - **npm package (API key):** add `npx -y topsms-mcp` to your MCP client with `TOPSMS_CLIENT_ID` and `TOPSMS_SECRET` (see [Option B](#option-b-npm-package-stdio)).
-3. Ask: *"How much credit do I have?"* Use a test API key first if you want to try sending without cost.
+3. Ask: *"How much credit do I have?"*
+
+> **Live key:** the hosted connector (OAuth) always uses a live key, so every `send_*` call really sends and is paid from your credit. To try sending without cost, use the npm package or the remote endpoint with a **test API key** in the `Authorization` header.
 
 ## Tools
 
@@ -75,7 +77,7 @@ Endpoint: `https://topsms.eu/api/mcp` (Streamable HTTP). Accounts created on www
 }
 ```
 
-Each OAuth connection appears in the TopSMS dashboard as an API key named "OAuth: <app name>"; revoke it there to disconnect.
+Each OAuth connection appears in the TopSMS dashboard as an API key named "OAuth: <app name>"; revoke it there to disconnect. OAuth connections are live keys (messages are really sent and charged); for a dry run use a test key with Option B or the header described below.
 
 ### Option B: npm package (stdio)
 
@@ -91,7 +93,8 @@ Claude Desktop, Cursor, Windsurf, VS Code and other stdio clients:
       "args": ["-y", "topsms-mcp"],
       "env": {
         "TOPSMS_CLIENT_ID": "your-client-id",
-        "TOPSMS_SECRET": "your-secret"
+        "TOPSMS_SECRET": "your-secret",
+        "TOPSMS_BASE_URL": "https://topsms.eu"
       }
     }
   }
@@ -100,15 +103,19 @@ Claude Desktop, Cursor, Windsurf, VS Code and other stdio clients:
 
 Claude Code: `claude mcp add topsms -e TOPSMS_CLIENT_ID=... -e TOPSMS_SECRET=... -- npx -y topsms-mcp`
 
-The API key decides the account and its currency; the same package works for topsms.eu and topsms.cz accounts. Optional: `TOPSMS_BASE_URL` (default `https://www.topsms.cz`); set it to `https://topsms.eu` if you want `get_pricing` to return the EUR price list instead of the CZK one.
+The API key decides the account and its currency; the same package works for topsms.eu and topsms.cz accounts. `TOPSMS_BASE_URL` is optional: the example above uses `https://topsms.eu` (EUR accounts); for a topsms.cz account use `https://www.topsms.cz` or leave it out. Since 1.1.3, without `TOPSMS_BASE_URL` the `get_pricing` tool returns the price list in your account currency.
 
 ## Pricing
 
-In short: from €0.089 per SMS in the EU (EUR accounts) and 0,99 Kč per SMS in the Czech Republic and Slovakia (CZK accounts), prepaid, no monthly fee, credit does not expire.
+In short: from €0.061 per SMS in the EU (EUR accounts) and 0,99 Kč per SMS in the Czech Republic and Slovakia (CZK accounts), prepaid, no monthly fee, credit does not expire.
 
 Prices as of 17 November 2026. All prices are final; no VAT is added.
 
-- **EUR accounts (topsms.eu):** €0.089 per SMS segment to Germany, Austria and most EU countries (EU zone). Czech and Slovak numbers: €0.038–0.041 by monthly volume.
+- **EUR accounts (topsms.eu):** price per SMS segment by country:
+  - €0.061: Austria, Poland, Portugal
+  - €0.074: Italy, Spain, United Kingdom, Denmark, Norway, Greece, Romania, Lithuania, Latvia, Estonia
+  - €0.089: Germany and the rest of the EU zone (Belgium, Bulgaria, Cyprus, Finland, France, Croatia, Hungary, Ireland, Luxembourg, Malta, Netherlands, Sweden, Slovenia, Switzerland, Iceland, Liechtenstein)
+  - Prices change; the live list is at https://topsms.eu/pricing and https://topsms.eu/pricing.json. Czech and Slovak numbers: €0.038–0.041 by monthly volume.
 - **CZK accounts (www.topsms.cz):** 0,99 Kč per SMS to Czech and Slovak numbers; 0,96 Kč from 5 000 Kč monthly spend; 0,93 Kč from 15 000 Kč.
 - No monthly fee, no setup fee. Credit never expires; unused credit is not refunded.
 - Own alphanumeric sender name: on topsms.eu no fee for most EU countries (country rules apply, for example Austria's RTR register, Spain's CNMC registry, Italy's AGCOM registration for Italian VAT holders; France may require registration). On CZK accounts 500 Kč one-off for Czech and Slovak operators, no monthly fee.

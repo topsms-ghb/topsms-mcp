@@ -8,7 +8,7 @@ import { z } from 'zod'
 const BASE = (process.env.TOPSMS_BASE_URL || 'https://www.topsms.cz').replace(/\/$/, '')
 const CLIENT_ID = process.env.TOPSMS_CLIENT_ID || ''
 const SECRET = process.env.TOPSMS_SECRET || ''
-const VERSION = '1.1.2'
+const VERSION = '1.1.3'
 
 async function api(method, path, body, extraHeaders = {}) {
   if (!CLIENT_ID || !SECRET) {
@@ -124,11 +124,16 @@ server.tool(
 
 server.tool(
   'get_pricing',
-  'Get the current public TopSMS price list (prices per destination zone, volume tiers, sender name fee, billing rules). Does not require credentials. Use it instead of quoting prices from memory.',
+  'Get the current public TopSMS price list (prices per destination zone, volume tiers, sender name fee, billing rules). Does not require credentials; with an API key the list matches the account currency (EUR or CZK). Use it instead of quoting prices from memory.',
   {},
   async () => {
     try {
-      const res = await fetch(BASE + '/pricing.json', { headers: { 'User-Agent': `topsms-mcp/${VERSION}` } })
+      // Bez TOPSMS_BASE_URL vybereme cenik podle meny uctu (EUR -> topsms.eu, CZK -> www.topsms.cz)
+      let site = BASE
+      if (!process.env.TOPSMS_BASE_URL && CLIENT_ID && SECRET) {
+        try { const c = await api('GET', '/api/credit'); if (c && c.currency === 'EUR') site = 'https://topsms.eu' } catch { /* bez klice nebo chyba: vychozi cenik */ }
+      }
+      const res = await fetch(site + '/pricing.json', { headers: { 'User-Agent': `topsms-mcp/${VERSION}` } })
       return ok(await res.json())
     } catch (e) { return fail(e) }
   },
